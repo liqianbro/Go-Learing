@@ -15,7 +15,7 @@ func main() {
 }
 
 const (
-	verifiedUrl = "http://smrz1111.market.alicloudapi.com/communication/personal/1882"
+	verifiedUrl = "http://checkone.market.alicloudapi.com/chinadatapay/1882"
 	appCode     = "123456"
 )
 
@@ -60,7 +60,7 @@ func (r *realNameVerified) UserRealNameVerified(realName, idCard string) {
 	req.URL.RawQuery = params.Encode()
 
 	req.Header.Set("Authorization", fmt.Sprintf("%s %s", "APPCODE", appCode))
-	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
 	resp, err := client.Do(req)
 
 	defer resp.Body.Close()

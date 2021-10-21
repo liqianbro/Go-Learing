@@ -1,50 +1,73 @@
 package main
 
 import (
+	"bytes"
 	"crypto/aes"
 	"crypto/cipher"
+	"encoding/base64"
 	"fmt"
-	"os"
 )
 
-var commonIV = []byte{0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f}
+const key = "1111111111111111"
 
 func main() {
-	AES()
+	text := "1111111111111111"
+	result := AesEncryptByCBC(text)
+	fmt.Println(result)
+	fmt.Println(AesDecryptByCBC(result))
 }
 
-func AES() {
-	//需要去加密的字符串
-	plaintext := []byte("宇宙无敌大帅哥")
-	//如果传入加密串的话，plaint就是传入的字符串
-	if len(os.Args) > 1 {
-		plaintext = []byte(os.Args[1])
-	}
-
-	//aes的加密字符串
-	key_text := "astaxie12798akljzmknm.ahkjkljl;k"
-	if len(os.Args) > 2 {
-		key_text = os.Args[2]
-	}
-
-	fmt.Println(len(key_text))
-
-	// 创建加密算法aes
-	c, err := aes.NewCipher([]byte(key_text))
+func AesEncryptByCBC(data string) string {
+	block, err := aes.NewCipher([]byte(key))
 	if err != nil {
-		fmt.Printf("Error: NewCipher(%d bytes) = %s", len(key_text), err)
-		os.Exit(-1)
+		fmt.Println(err)
+	}
+	// 填充
+	paddText := PKCS7Padding([]byte(data), block.BlockSize())
+
+	blockMode := cipher.NewCBCEncrypter(block, []byte(key)[:block.BlockSize()])
+
+	// 加密
+	result := make([]byte, len(paddText))
+	blockMode.CryptBlocks(result, paddText)
+	// 返回密文
+	return base64.StdEncoding.EncodeToString(result)
+}
+
+func AesDecryptByCBC(data string) string {
+	decodeString, err := base64.StdEncoding.DecodeString(data)
+
+	block, err := aes.NewCipher([]byte(key))
+	if err != nil {
+		fmt.Println(err)
 	}
 
-	//加密字符串
-	cfb := cipher.NewCFBEncrypter(c, commonIV)
-	ciphertext := make([]byte, len(plaintext))
-	cfb.XORKeyStream(ciphertext, plaintext)
-	fmt.Printf("%s=>%x\n", plaintext, ciphertext)
+	blockMode := cipher.NewCBCDecrypter(block, []byte(key)[:block.BlockSize()])
 
-	// 解密字符串
-	cfbdec := cipher.NewCFBDecrypter(c, commonIV)
-	plaintextCopy := make([]byte, len(plaintext))
-	cfbdec.XORKeyStream(plaintextCopy, ciphertext)
-	fmt.Printf("%x=>%s\n", ciphertext, plaintextCopy)
+	result := make([]byte, len(decodeString))
+
+	blockMode.CryptBlocks(result, []byte(decodeString))
+	// 去除填充
+	result = UnPKCS7Padding(result)
+	return string(result)
+}
+
+func UnPKCS7Padding(text []byte) []byte {
+	// 取出填充的数据 以此来获得填充数据长度
+	unPadding := int(text[len(text)-1])
+	return text[:(len(text) - unPadding)]
+}
+
+func PKCS7Padding(text []byte, blockSize int) []byte {
+	// 计算待填充的长度
+	padding := blockSize - len(text)%blockSize
+	var paddingText []byte
+	if padding == 0 {
+		// 已对齐，填充一整块数据，每个数据为 blockSize
+		paddingText = bytes.Repeat([]byte{byte(blockSize)}, blockSize)
+	} else {
+		// 未对齐 填充 padding 个数据，每个数据为 padding
+		paddingText = bytes.Repeat([]byte{byte(padding)}, padding)
+	}
+	return append(text, paddingText...)
 }

@@ -18,7 +18,7 @@ func TestReadGiftPackCode(t *testing.T) {
 		// TODO: Add test cases.
 		{
 			name: "读取文件测试",
-			args: args{file: "/Users/lee/Desktop/Lee/学习教程/Go-Learing/file/code.txt", roomId: 1},
+			args: args{file: "file/code.txt", roomId: 1},
 			want: "insert into `gift_pack` ( `room_id`,`activity_code` ) values (1, 'UP1237LD7MF39121');",
 		},
 	}

@@ -11,7 +11,13 @@ import (
 //ReadGiftPackCode 读取文件转SQL
 func ReadGiftPackCode(file string, roomId int) string {
 	// 小文件用 ioutil 读取
-	b, err := ioutil.ReadFile(file)
+	open, err := os.Open(file)
+	if err != nil {
+		panic(err)
+	}
+	defer open.Close()
+
+	b, err := ioutil.ReadAll(open)
 	if err != nil {
 		panic(err)
 	}
@@ -22,7 +28,6 @@ func ReadGiftPackCode(file string, roomId int) string {
 	}
 	sql = strings.TrimRight(sql, ",")
 	sql += ";"
-	//fmt.Println(sql)
 	return sql
 }
 

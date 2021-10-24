@@ -4,23 +4,9 @@ import (
 	"bufio"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"strings"
-	"time"
 )
-
-func main() {
-	startT := time.Now()
-
-	err := WriteFile("giftPack", ReadGiftPackCode("file/code.txt", 1))
-	if err != nil {
-		log.Println(err)
-	}
-
-	tc := time.Since(startT)
-	fmt.Printf("time cost = %v\n", tc)
-}
 
 //ReadGiftPackCode 读取文件转SQL
 func ReadGiftPackCode(file string, roomId int) string {

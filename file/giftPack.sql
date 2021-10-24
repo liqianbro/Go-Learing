@@ -1,0 +1,1 @@
+insert into `gift_pack` ( `room_id`,`activity_code` ) values (1, 'UP1237LD7MF39121');

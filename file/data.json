@@ -1,0 +1,17 @@
+[
+  {
+    "site": "cnn",
+    "link": "http://cnn.com",
+    "type": "rss"
+  },
+  {
+    "site": "fox",
+    "link": "http://fox.com",
+    "type": "rss"
+  },
+  {
+    "site": "nbc",
+    "link": "http://nbc.com",
+    "type": "rss"
+  }
+]

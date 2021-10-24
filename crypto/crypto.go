@@ -1,4 +1,4 @@
-package main
+package crypto
 
 import (
 	"bytes"
@@ -9,13 +9,6 @@ import (
 )
 
 const key = "1111111111111111"
-
-func main() {
-	text := "1111111111111111"
-	result := AesEncryptByCBC(text)
-	fmt.Println(result)
-	fmt.Println(AesDecryptByCBC(result))
-}
 
 func AesEncryptByCBC(data string) string {
 	block, err := aes.NewCipher([]byte(key))

@@ -1,12 +1,18 @@
 package main
 
 import (
-	"Go-Learing/read"
-	"fmt"
+	"Go-Learing/app/router"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
+	// 设置为发布模式
+	gin.SetMode(gin.DebugMode)
 
-	fmt.Println(read.ReadGiftPackCode("file/code.txt", 1))
+	r := router.SetupRouter()
 
+	err := r.Run(":8881")
+	if err != nil {
+		panic(err)
+	}
 }

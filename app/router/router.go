@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -30,8 +29,7 @@ func SetupRouter() *gin.Engine {
 
 func ProtoResponse(c *gin.Context, data proto.Message) {
 	if c.Query("format") == "json" {
-		b, _ := protojson.Marshal(data)
-		c.String(http.StatusOK, "%s", b)
+		c.JSON(http.StatusOK, data)
 	} else {
 		c.ProtoBuf(http.StatusOK, data)
 	}

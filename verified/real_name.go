@@ -1,4 +1,4 @@
-package main
+package verified
 
 import (
 	"encoding/json"
@@ -10,10 +10,6 @@ import (
 	"net/url"
 	"time"
 )
-
-func main() {
-	RealNameVerified.UserRealNameVerified("XXX", "111111111111111111")
-}
 
 const (
 	verifiedUrl = "http://checkone.market.alicloudapi.com/chinadatapay/1882"

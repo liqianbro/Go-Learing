@@ -1,9 +1,12 @@
 package main
 
-import "Go-Learing/read"
+import (
+	"Go-Learing/read"
+	"fmt"
+)
 
 func main() {
 
-	read.ReadGiftPackCode("file/code.txt", 1)
+	fmt.Println(read.ReadGiftPackCode("file/code.txt", 1))
 
 }

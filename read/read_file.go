@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"strings"
 )
@@ -41,11 +40,16 @@ func ReadGiftPackCode(file string, roomId int) string {
 	}
 	defer open.Close()
 
-	b, err := ioutil.ReadAll(open)
-	if err != nil {
-		panic(err)
+	var codes []string
+	// 每行读取
+	scanner := bufio.NewScanner(open)
+	for scanner.Scan() {
+		codes = append(codes, scanner.Text())
 	}
-	codes := strings.Split(string(b), "\n")
+	if err := scanner.Err(); err != nil {
+		fmt.Fprintln(os.Stderr, "reading standard input:", err)
+	}
+
 	sql := "insert into `gift_pack` ( `room_id`,`activity_code` ) values "
 	for _, c := range codes {
 		sql += fmt.Sprintf("(%v, '%s'),", roomId, c)

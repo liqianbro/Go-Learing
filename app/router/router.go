@@ -1,6 +1,7 @@
 package router
 
 import (
+	"Go-Learing/app/db/mysqldb"
 	"Go-Learing/app/protoc/cloud/protos"
 	"net/http"
 
@@ -21,6 +22,13 @@ func SetupRouter() *gin.Engine {
 				Name: "Gin",
 			}
 			ProtoResponse(c, ret)
+		})
+		api.GET("/get/user", func(context *gin.Context) {
+			count, err := mysqldb.DB.User.Query().Count(context)
+			if err != nil {
+				return
+			}
+			context.JSON(http.StatusOK, gin.H{"data": count})
 		})
 	}
 

@@ -1,0 +1,3 @@
+[db.mysql]
+type="mysql"
+dsn="root:123456@tcp(localhost:3306)/cloud?charset=utf8mb4&parseTime=true&loc=Local"

@@ -78,3 +78,17 @@ func WriteFile(fileName string, content string) error {
 	}
 	return nil
 }
+
+// RemoveDuplicateElement
+// 数组去重
+func RemoveDuplicateElement(languages []string) []string {
+	result := make([]string, 0, len(languages))
+	temp := map[string]struct{}{}
+	for _, item := range languages {
+		if _, ok := temp[strings.ToLower(item)]; !ok {
+			temp[strings.ToLower(item)] = struct{}{}
+			result = append(result, item)
+		}
+	}
+	return result
+}

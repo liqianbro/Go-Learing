@@ -1,6 +1,9 @@
 package read
 
 import (
+	"bufio"
+	"fmt"
+	"os"
 	"reflect"
 	"testing"
 )
@@ -61,4 +64,28 @@ func TestReadGiftPackCode(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestRemoveDuplicateElement(t *testing.T) {
+	//s := []string{"hs1MZQIO", "hs1mZQIO", "hello", "golang", "hello", "ruby", "php", "java", "PHP"}
+
+	// 小文件用 ioutil 读取
+	open, err := os.Open("/Users/cwcw/Desktop/Learn/Go-Learing/file/ss.txt")
+	if err != nil {
+		panic(err)
+	}
+	defer open.Close()
+
+	var codes []string
+	// 每行读取
+	scanner := bufio.NewScanner(open)
+	for scanner.Scan() {
+		codes = append(codes, scanner.Text())
+	}
+	if err := scanner.Err(); err != nil {
+		fmt.Fprintln(os.Stderr, "reading standard input:", err)
+	}
+
+	fmt.Println(len(RemoveDuplicateElement(codes))) //output: hello world golang ruby php java
+
 }

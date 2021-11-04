@@ -17,7 +17,7 @@ func HideStar(str string) (result string) {
 			resString := "***"
 			result = resString + "@" + res[1]
 		} else {
-			res2 := Substr2(str, 0, 3)
+			res2 := Substr2(str, 0, 1)
 			resString := res2 + "***"
 			result = resString + "@" + res[1]
 		}
